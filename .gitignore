@@ -1,0 +1,10 @@
+**/target/
+.idea/
+*.iml
+logs/
+.env
+*.log
+
+.runtime/
+.backups/
+.env.*

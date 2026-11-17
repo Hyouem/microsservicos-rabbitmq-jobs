@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: jobsdb
+      POSTGRES_USER: jobs
+      POSTGRES_PASSWORD: jobs
+    ports: ["15435:5432"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jobs -d jobsdb"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+  rabbitmq:
+    image: rabbitmq:4-management
+    environment:
+      RABBITMQ_DEFAULT_USER: jobs
+      RABBITMQ_DEFAULT_PASS: jobs
+    ports: ["5673:5672", "15673:15672"]
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes: ["rabbitdata:/var/lib/rabbitmq"]
+volumes:
+  pgdata:
+  rabbitdata:
